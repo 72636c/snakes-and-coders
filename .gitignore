@@ -7,6 +7,9 @@ __pycache__/
 /dist/
 /*.egg-info
 
+# Node.js modules
+node_modules/
+
 # Text editor / IDE files
 .vscode/
 
