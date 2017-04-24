@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coding 101</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id="content">
+      <header>
+        <div class="wrapper">
+          <h1>Coding 101</h1>
+        </div>
+      </header>
+      <section>
+        <p>Tip: hit <kbd>Ctrl</kbd>+<kbd>F9</kbd> (<kbd>Cmd</kbd>+<kbd>F9</kbd> on macOS) to run.
+        <form id="ide">
+          <div id="editor-container"></div>
+          <input id="run" type="submit" value="Run">
+        </form>
+      </section>
+      <section>
+        <h3>Response</h3>
+        <div class="info" id="response"></div>
+        <h3>Printed Output</h3>
+        <div class="info" id="stdout"></div>
+        <h3>Local Variables</h3>
+        <div class="info" id="locals"></div>
+      </section>
+    </div>
+    <footer>
+      <div class="wrapper">
+        <p><a href="https://microsoft.github.io/monaco-editor/" target="_blank">Monaco Editor</a> by <a href="https://www.microsoft.com/" target="_blank">Microsoft</a>. Style from <a href="https://www.seek.com.au/" target="_blank">SEEK</a>. Built on <a href="https://aws.amazon.com/" target="_blank">AWS</a>. ♥ to <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a>.</p>
+      </div>
+    </footer>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
