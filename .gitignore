@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Setuptools artefacts
+/dist/
+/*.egg-info
+
+# Text editor / IDE files
+.vscode/
+
+# Miscellaneous files
+.input/
+.output/
+.publish/
+.temp/
