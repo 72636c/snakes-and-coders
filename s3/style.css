@@ -105,24 +105,24 @@ button, input[type="submit"] {
   color: white;
 }
 
-button:active, input[type="submit"]:active {
-  background-color: #cd026b;
-  outline: none;
-  transform: scale(0.95);
-}
-
 button:disabled, input[type="submit"]:disabled {
   background-color: rgb(127, 127, 127);
   cursor: wait;
   transform: scale(0.95);
 }
 
-button:focus, input[type="submit"]:focus {
+button:enabled:active, input[type="submit"]:enabled:active {
+  background-color: #cd026b;
+  outline: none;
+  transform: scale(0.95);
+}
+
+button:enabled:focus, input[type="submit"]:enabled:focus {
   box-shadow: 0 0 0 1px #1e90ff;
   outline: none;
 }
 
-button:hover, input[type="submit"]:hover {
+button:enabled:hover, input[type="submit"]:enabled:hover {
   background-color: #fd0585;
   cursor: pointer;
 }
