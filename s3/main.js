@@ -1,17 +1,19 @@
-var editorForm = $("form#ide");
-var runButton = $("input#run");
+// Python API endpoint.
+const API_URL = "https://rqbnzw6j8k.execute-api.ap-southeast-2.amazonaws.com/prod/arbitrary-execution"
+const API_KEY = "OGOkeZSQ1S8w6sJDtfAHq5MvUqUqLPTyywIIhUO6"
 
+// Run when DOM is ready for execution.
 $(document).ready(function() {
   // Get initial input.
-  var cached = localStorage.getItem("editorValue")
-  var editorValue = cached
+  var editorValue = localStorage.getItem("editorValue");
   if (editorValue === null) {
-    editorValue = "print(\"Hello there\")"
+    editorValue = $("code#code-editor-value").text();
+    console.log(editorValue);
   }
   // Set up the Monaco Editor.
   require.config({ paths: { "vs": "node_modules/monaco-editor/min/vs" }});
   require(["vs/editor/editor.main"], function() {
-    var editor = monaco.editor.create(document.getElementById("editor-container"), {
+    var editor = monaco.editor.create(document.getElementById("code-editor-container"), {
       value: editorValue,
       theme: "vs-dark",
       language: "python",
@@ -24,54 +26,57 @@ $(document).ready(function() {
   });
 });
 
+// Submit form when Cmd/Ctrl + F9 is hit.
 $(document).keyup(function(event) {
   if ((event.ctrlKey || event.metaKey) && (event.keyCode == 120)) {
     event.stopPropagation();
-    editorForm.submit();
+    $("form#code-editor-form").submit();
   }
 });
 
-editorForm.submit(function(event) {
+// Process code when form is submitted.
+$("form#code-editor-form").submit(function(event) {
   event.preventDefault();
-  runButton.prop("disabled", true);
-  var $form = $(this),
-      url = $form.attr("action");
+  $("input#code-editor-run").prop("disabled", true);
   $.ajax({
     contentType: "text/plain",
     data: monaco.editor.getModels()[0].getValue(),
     processData: false,
     type: "POST",
-    url: "https://rqbnzw6j8k.execute-api.ap-southeast-2.amazonaws.com/prod/arbitrary-execution",
+    url: API_URL,
     beforeSend: function(request) {
-      request.setRequestHeader("X-Api-Key", "OGOkeZSQ1S8w6sJDtfAHq5MvUqUqLPTyywIIhUO6");
+      request.setRequestHeader("X-Api-Key", API_KEY);
       request.setRequestHeader("X-Amz-Invocation-Type", "Event");
     },
     success: function(data) {
-      $("div#response").text(data.response).trigger("change");
-      var stdout = data.stdout.replace(/\n$/, "");
-      $("div#stdout").text(stdout).trigger("change");
-      var locals = "";
-      for (var key in data.locals) {
-        locals += key + " = " + JSON.stringify(data.locals[key]) + "\n";
-      }
-      locals = locals.replace(/\n$/, "")
-      $("div#locals").text(locals).trigger("change");
+      handleResponse(data);
       console.log(data);
-      runButton.prop("disabled", false);
     },
-    error: function(jqxhr) {
-      var error = jqxhr.responseJSON;
-      $("div#response").text(error.response).trigger("change");
-      var stdout = error.stdout.replace(/\n$/, "")
-      $("div#stdout").text(stdout).trigger("change");
-      var locals = "";
-      for (var key in error.locals) {
-        locals += key + " = " + JSON.stringify(error.locals[key]) + "\n";
-      }
-      locals = locals.replace(/\n$/, "")
-      $("div#locals").text(locals).trigger("change");
-      console.log(jqxhr);
-      runButton.prop("disabled", false);
+    error: function(xhr) {
+      handleResponse(xhr.responseJSON);
+      console.log(xhr);
     }
   });
 });
+
+// Handle JSON response from AJAX request.
+function handleResponse(data) {
+  $("div#code-exec-response").text(trimTrailingNewline(data.response)).trigger("change");
+  $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout)).trigger("change");
+  $("div#code-exec-locals").text(stringifyLocals(data.locals)).trigger("change");
+  $("input#code-editor-run").prop("disabled", false);
+}
+
+// Convert locals dictionary to multi-line string.
+function stringifyLocals(locals) {
+  var result = "";
+  for (var key in locals) {
+    result += key + " = " + JSON.stringify(locals[key]) + "\n";
+  }
+  return trimTrailingNewline(result);
+}
+
+// Remove newline from the end of a string.
+function trimTrailingNewline(text) {
+  return text.replace(/\n$/, "");
+}
