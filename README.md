@@ -59,7 +59,7 @@ cd s3
 npm install monaco-editor@0.8.3
 ```
 
-Update AJAX request in [**s3/main.js**](s3/main.js) to specify the correct `X-Api-Key` header and `url` for the Lambda API.
+Update `API_URL` and `API_KEY` variables in [**s3/main.js**](s3/main.js) to point to the Lambda API.
 
 Update [**s3-nonwww/index.html**](s3-nonwww/index.html) and [**s3-nonwww/redirection.xml**](s3-nonwww/redirection.xml) to point to `https://www.domain.tld`.
 

@@ -1,61 +1,74 @@
 """Runs arbitrary code and provides details of its execution."""
 
-import contextlib
-import io
+from io import StringIO
+from multiprocessing import Process
+from numbers import Number
 import json
-import numbers
 import sys
 
-
-@contextlib.contextmanager
-def stdout_eater():
-
-    """Redirects `sys.stdout` output to a string buffer."""
-
-    old_stdout = sys.stdout
-    new_stdout = io.StringIO()
-    sys.stdout = new_stdout
-    yield new_stdout
-    sys.stdout = old_stdout
+TIMEOUT_SECONDS = 3
 
 
-def lambda_handler(event, _context):
+def validate_timebox(obj, locals_):
+
+    """Validate that execution completes within a timebox."""
+
+    process = Process(target=exec, name="Exec", args=(obj, locals_, locals_))
+    process.start()
+    process.join(TIMEOUT_SECONDS)
+
+    if process.is_alive():
+        process.terminate()
+        process.join()
+        raise TimeoutError("took too long to run :(")
+
+
+def serialise_locals(locals_):
+
+    """Converts `locals()` values into numerics and strings."""
+
+    result = {}
+
+    for (key, value) in locals_.items():
+        if key == "__builtins__":
+            continue
+        if isinstance(value, (Number, str)):
+            new_value = value
+        else:
+            try:
+                new_value = json.dumps(value)
+            except TypeError:
+                new_value = str(value)
+        result[key] = new_value
+
+    return result
+
+
+def lambda_handler(event, _context=None):
 
     """Handles invocation from AWS Lambda."""
 
     print(event)
-    locals_dict = {}
+    old_stdout = sys.stdout
+    new_stdout = StringIO()
+    sys.stdout = new_stdout
+    locals_ = {}
 
     try:
         code = compile(event["body"], "<string>", "exec")
-        with stdout_eater() as eater:
-            exec(code, locals_dict, locals_dict)
+        validate_timebox(code, locals_)
+        exec(code, locals_, locals_)
     except Exception as exc:
         status_code = 400
         response = "{}: {}".format(exc.__class__.__name__, exc)
-        output = ""
     else:
         status_code = 200
         response = "OK"
-        output = eater.getvalue()
-
-    locals_serialised = {}
-    for (key, value) in locals_dict.items():
-        if key == "__builtins__":
-            continue
-        if isinstance(value, (str, numbers.Number)):
-            value_serialised = value
-        else:
-            try:
-                value_serialised = json.dumps(value)
-            except TypeError:
-                value_serialised = str(value)
-        locals_serialised[key] = value_serialised
 
     body = json.dumps({
         "response": response,
-        "stdout": output,
-        "locals": locals_serialised,
+        "stdout": new_stdout.getvalue(),
+        "locals": serialise_locals(locals_),
     })
 
     output = {
@@ -67,5 +80,6 @@ def lambda_handler(event, _context):
         "body": body,
     }
 
+    sys.stdout = old_stdout
     print(output)
     return output
