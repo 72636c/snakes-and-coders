@@ -1,12 +1,33 @@
 # Snakes and Coders
 
-## Lambda API
+Coding 101 with Python 3.
 
-### Create Lambda function
+## Overview
+
+`Snakes and Coders` provides a simple, web-based Python "environment" to get started with coding.
+
+It consists of:
+
+- A static website with a basic code editor and facilities to submit the code for execution
+- An API that runs arbitrary Python code and returns execution details
+
+**<https://www.snakesandcoders.com/>**
+
+## Deployment
+
+### Prerequisites
+
+Sign up for an [**AWS**](https://aws.amazon.com/) account.
+
+Install [**Node.js and npm**](https://nodejs.org/).
+
+### Lambda API
+
+#### Create Lambda function
 
 Upload [**lambda/lambda_function.py**](lambda/lambda_function.py) to AWS Lambda.
 
-### Trigger with API Gateway
+#### Trigger with API Gateway
 
 Create resource with POST method to trigger the Lambda function.
 
@@ -21,15 +42,15 @@ Access-Control-Allow-Origin  | '*'
 
 Deploy API.
 
-## Static website
+### Static website
 
-### Register custom domain
+#### Register custom domain
 
 Register domain name, e.g. `domain.tld`, via Route 53.
 
 Request SSL certificates `domain.tld` and `www.domain.tld` with ACM.
 
-### Package assets
+#### Package assets
 
 Install Monaco Editor:
 
@@ -42,7 +63,7 @@ Update AJAX request in [**s3/main.js**](s3/main.js) to specify the correct `X-Ap
 
 Update [**s3-nonwww/index.html**](s3-nonwww/index.html) and [**s3-nonwww/redirection.xml**](s3-nonwww/redirection.xml) to point to `https://www.domain.tld`.
 
-### Host assets on S3
+#### Host assets on S3
 
 Create primary S3 bucket, e.g. `domain`:
 
@@ -57,7 +78,7 @@ Create redirect S3 bucket, e.g. `domain-nonwww`:
 - Configure redirection rules per [**s3-nonwww/redirection.xml**](s3-nonwww/redirection.xml)
 - Configure public permissions
 
-### Publish to custom domain via CDN
+#### Publish to custom domain via CDN
 
 Create primary CloudFront distribution:
 
