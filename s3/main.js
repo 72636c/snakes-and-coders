@@ -27,13 +27,13 @@ function stringifyLocals(locals) {
 function handleResponse(data) {
     "use strict";
     try {
-        $("div#code-exec-response").text(trimTrailingNewline(data.response)).trigger("change");
-        $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout)).trigger("change");
-        $("div#code-exec-locals").text(stringifyLocals(data.locals)).trigger("change");
+        $("div#code-exec-response").text(trimTrailingNewline(data.response));
+        $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout));
+        $("div#code-exec-locals").text(stringifyLocals(data.locals));
     } catch (err) {
-        $("div#code-exec-response").text(err.name + ": " + err.message).trigger("change");
-        $("div#code-exec-stdout").text("").trigger("change");
-        $("div#code-exec-locals").text("").trigger("change");
+        $("div#code-exec-response").text(err.name + ": " + err.message);
+        $("div#code-exec-stdout").text("");
+        $("div#code-exec-locals").text("");
     }
     $("input#code-editor-run").prop("disabled", false);
 }
