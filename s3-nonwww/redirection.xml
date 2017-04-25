@@ -1,0 +1,9 @@
+<RoutingRules>
+  <RoutingRule>
+    <Redirect>
+      <Protocol>https</Protocol>
+      <HostName>www.snakesandcoders.com</HostName>
+      <HttpRedirectCode>301</HttpRedirectCode>
+    </Redirect>
+  </RoutingRule>
+</RoutingRules>
