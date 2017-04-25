@@ -26,9 +26,15 @@ function stringifyLocals(locals) {
 // Handle JSON response from AJAX request.
 function handleResponse(data) {
     "use strict";
-    $("div#code-exec-response").text(trimTrailingNewline(data.response)).trigger("change");
-    $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout)).trigger("change");
-    $("div#code-exec-locals").text(stringifyLocals(data.locals)).trigger("change");
+    try {
+        $("div#code-exec-response").text(trimTrailingNewline(data.response)).trigger("change");
+        $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout)).trigger("change");
+        $("div#code-exec-locals").text(stringifyLocals(data.locals)).trigger("change");
+    } catch (err) {
+        $("div#code-exec-response").text(err.name + ": " + err.message).trigger("change");
+        $("div#code-exec-stdout").text("").trigger("change");
+        $("div#code-exec-locals").text("").trigger("change");
+    }
     $("input#code-editor-run").prop("disabled", false);
 }
 
