@@ -63,10 +63,10 @@ $(document).ready(function () {
     });
 });
 
-// Submit form when Cmd/Ctrl + F9 is hit.
+// Submit form when F9 is hit.
 $(document).keyup(function (event) {
     "use strict";
-    if ((event.ctrlKey || event.metaKey) && (event.keyCode === 120)) {
+    if (event.keyCode === 120) {
         event.stopPropagation();
         $("form#code-editor-form").submit();
     }
