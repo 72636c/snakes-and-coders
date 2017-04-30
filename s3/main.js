@@ -47,7 +47,7 @@ function stringifyVariables(variables) {
     "use strict";
     var result = "";
     $.each(variables, function (key, value) {
-        result += key + " = " + JSON.stringify(value) + "\n";
+        result += key + " = " + JSON.stringify(value).replace(/\\"/g, "\"") + "\n";
         return;
     });
     return trimTrailingNewline(result);
