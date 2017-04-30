@@ -20,25 +20,32 @@ html {
   box-sizing: inherit;
 }
 
+section > :first-child {
+  margin-top: 0;
+}
+
 img {
   box-sizing: content-box;
 }
 
-code, div.mono-info, pre {
+code, div.mono-info, pre, textarea.mono-info {
   font-family: "Consolas", "Menlo", "Monaco", "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, sans-serif;
 }
 
-kbd {
+code, kbd {
   background-color: rgb(63, 63, 63);
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
+
+kbd {
   display: inline-block;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  padding-left: 0.25em;
-  padding-right: 0.25em;
   white-space: nowrap;
 }
 
-button, div#code-editor-container, input[type="submit"], kbd {
+button, code, div#code-editor-container, input[type="submit"], kbd, section#secret-config, textarea {
   border: 0.25rem solid transparent;
   border-radius: 0.25rem;
 }
@@ -46,8 +53,8 @@ button, div#code-editor-container, input[type="submit"], kbd {
 /*Block Sections*/
 
 header {
-  background-color: #0d3880;
-  border-bottom: 1em solid #00225a;
+  background-color: #0D3880;
+  border-bottom: 1em solid #00225A;
   color: rgb(239, 240, 241);
   line-height: 2em;
   margin-bottom: 2em;
@@ -72,6 +79,10 @@ footer {
   background-color: rgb(31, 31, 31);
 }
 
+section + section {
+  margin-top: 2em;
+}
+
 /*Link Elements*/
 
 footer a {
@@ -84,7 +95,7 @@ footer a, footer a:link, footer a:visited {
 }
 
 footer a:active {
-  color: #e60278;
+  color: #E60278;
 }
 
 footer a:hover {
@@ -97,10 +108,24 @@ button, input, textarea {
   font-size: 1em;
 }
 
+div#code-editor-container, textarea {
+  background-color: #1E1E1E;
+}
+
+textarea {
+  color: rgb(223, 223, 223);
+  max-width: 100%;
+}
+
+textarea:disabled {
+  box-shadow: 0 0 0 1px #1E1E1E;
+  background-color: rgb(0, 0, 0);
+}
+
 button, input[type="submit"] {
   padding: 0.5em 1em;
   transition: background-color 0.25s, transform 0.25s;
-  background-color: #e60278;
+  background-color: #E60278;
   box-shadow: 0 0 0 1px rgba(63, 63, 63, .75);
   color: white;
 }
@@ -112,22 +137,30 @@ button:disabled, input[type="submit"]:disabled {
 }
 
 button:enabled:active, input[type="submit"]:enabled:active {
-  background-color: #cd026b;
+  background-color: #CD026B;
   outline: none;
   transform: scale(0.95);
 }
 
-button:enabled:focus, input[type="submit"]:enabled:focus {
-  box-shadow: 0 0 0 1px #1e90ff;
+button:enabled:focus, input[type="submit"]:enabled:focus, textarea:enabled:focus {
+  box-shadow: 0 0 0 1px #1E90FF;
   outline: none;
 }
 
 button:enabled:hover, input[type="submit"]:enabled:hover {
-  background-color: #fd0585;
+  background-color: #FD0585;
   cursor: pointer;
 }
 
 /*Specific Selectors*/
+
+.hide {
+  display: none;
+}
+
+code.variable {
+  border: none;
+}
 
 div.editor-widget.suggest-widget {
   max-width: 100% !important;
@@ -135,7 +168,7 @@ div.editor-widget.suggest-widget {
 
 div.mono-info {
   background-color: rgb(0, 0, 0);
-  border-left: 0.1rem solid #1e90ff;
+  border-left: 0.1rem solid #1E90FF;
   color: rgb(191, 191, 191);
   min-height: 1.5em;
   padding: 0.25em 0.25em 0.25em 1.25em;
@@ -144,8 +177,9 @@ div.mono-info {
 }
 
 div#code-editor-container {
-  background-color: #1e1e1e;
   height: 25em;
+  margin-bottom: 1em;
+  margin-top: 1em;
   width: 100%;
 }
 
@@ -154,13 +188,60 @@ div#page-span {
 }
 
 input#code-editor-run {
-  margin-bottom: 1em;
-  margin-top: 1em;
   min-width: 100%;
 }
 
 section#secret-config {
-  display: none;
-  padding-bottom: 2em;
-  padding-top: 2em;
+  color: rgb(191, 191, 191);
+}
+
+span#secret-switch {
+  transition: color 0.25s;
+}
+
+span#secret-switch:hover {
+  color: #FD0585;
+  cursor: pointer;
+}
+
+span#secret-switch:active {
+  color: #828282;
+}
+
+ul.checklist {
+  padding: 0;
+}
+
+ul.checklist li {
+  list-style-type: none;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+  vertical-align: middle;
+}
+
+ul.checklist li:before {
+  content: "⬤";
+  margin-right: 1em;
+}
+
+ul.checklist li:before {
+  color: #8C8C8C;
+}
+
+ul.checklist li.fail:before {
+  color: #DD3333;
+}
+
+ul.checklist li.pass:before {
+  color: #50B848;
+}
+
+textarea#code-editor-setup {
+  padding-left: 46px;
+  padding-right: 46px;
+}
+
+textarea.mono-input {
+  resize: vertical;
+  width: 100%;
 }

@@ -13,6 +13,81 @@ It consists of:
 
 **<https://www.snakesandcoders.com/>**
 
+## Interfaces
+
+### Page configuration
+
+A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by passing its filename as a URL parameter, like `index.html/?<filename>/`.
+
+```json
+{
+  "setup": "x = 0\ny = 0",
+  "main": "print('Hello')",
+  "tests": {
+    "asserts": [
+        {
+            "expression": "x",
+            "description": "`x` exists."
+        }, {
+            "expression": "x == 1",
+            "description": "`x` equals 1."
+        }, {
+            "expression": "y == 0",
+            "description": "`y` equals 0."
+        }
+    ],
+    "prints": ["He", "Hello", "he", "there"]
+  },
+  "grouping": "exercise-1"
+}
+```
+
+### API request
+
+Requests to the API should be formatted like this:
+
+```json
+{
+    "headers": {"Content-Type": "application/json"},
+    "body": {
+        "setup": "x = 0\ny = 0",
+        "main": "print('Hello')\nx = 1",
+        "tests": {
+            "asserts": ["x", "x == 1", "y == 0"],
+            "prints": ["He", "Hello", "he", "there"]
+        }
+    }
+}
+```
+
+### API response
+
+When the API is able to service a request, it will respond like this:
+
+```json
+{
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+        "status": "OK",
+        "variables": {"x": 1, "y": 0},
+        "stdout": "Hello\\n",
+        "tests": {
+            "asserts": [true, true, true],
+            "prints": [true, true, false, false]
+        }
+    },
+    "statusCode": 200
+}
+```
+
+The following status codes may be returned:
+
+- 200 OK: request was serviced and code executed successfully
+- 400 Bad Request: request was serviced but code execution failed
+- 502 Bad Gateway: request was unhandled, causing an error on `Access-Control-Allow-Origin`
+
 ## Deployment
 
 ### Prerequisites
