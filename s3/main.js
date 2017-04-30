@@ -228,8 +228,13 @@ $("form#code-editor-form").submit(function (event) {
     $("input#code-editor-run").prop("disabled", true);
     var tests_asserts;
     var tests_prints;
+    var values_asserts;
     try {
         tests_asserts = JSON.parse($("textarea#code-editor-tests-asserts").val());
+        var values_asserts = []
+        $.each(tests_asserts, function (index) {
+            values_asserts.push(tests_asserts[index].expression);
+        });
         tests_prints = JSON.parse($("textarea#code-editor-tests-prints").val());
     } catch (ignore) {
         removeTests();
@@ -241,7 +246,7 @@ $("form#code-editor-form").submit(function (event) {
         "setup": $("textarea#code-editor-setup").val(),
         "main": monaco.editor.getModels()[0].getValue(),
         "tests": {
-            "asserts": tests_asserts,
+            "asserts": values_asserts,
             "prints": tests_prints
         }
     };
