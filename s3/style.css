@@ -220,12 +220,9 @@ ul.checklist li {
 }
 
 ul.checklist li:before {
+  color: #8C8C8C;
   content: "⬤";
   margin-right: 1em;
-}
-
-ul.checklist li:before {
-  color: #8C8C8C;
 }
 
 ul.checklist li.fail:before {
