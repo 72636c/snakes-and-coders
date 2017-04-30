@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 """Runs arbitrary code and provides details of its execution."""
 
 from io import StringIO
@@ -201,3 +203,20 @@ def _validate_timebox(code, timeout=TIMEOUT_SECONDS):
         process.terminate()
         process.join()
         raise TimeoutError(ERROR_TIMEOUT)
+
+
+if __name__ == "__main__":
+
+    lambda_handler({
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps({
+            "setup": "x = 0\ny = 0",
+            "main": "print('Hello')\nx = 1",
+            "tests": {
+                "asserts": ["x", "x == 1", "y == 0"],
+                "prints": ["He", "Hello", "he", "Hello there"],
+            },
+        }),
+    })
