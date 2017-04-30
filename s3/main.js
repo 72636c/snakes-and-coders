@@ -6,10 +6,23 @@
 var API_URL = "https://rqbnzw6j8k.execute-api.ap-southeast-2.amazonaws.com/prod/arbitrary-execution";
 var API_KEY = "OGOkeZSQ1S8w6sJDtfAHq5MvUqUqLPTyywIIhUO6";
 
+// Other predefined variables.
+var NEWLINE = "\n";
+
 // Remove newline from the end of a string.
 function trimTrailingNewline(text) {
     "use strict";
     return text.replace(/\n$/, "");
+}
+
+// Adds newlines to the end of a string if it is non-empty.
+function addTrailingNewlines(text, count) {
+    "use strict";
+    var result = trimTrailingNewline(text);
+    if (result && result.length > 0) {
+        result += NEWLINE.repeat(count);
+    }
+    return result;
 }
 
 // Convert locals dictionary to multi-line string.
@@ -23,17 +36,29 @@ function stringifyLocals(locals) {
     return trimTrailingNewline(result);
 }
 
-// Handle JSON response from AJAX request.
-function handleResponse(data) {
+// Handle XMLHttpRequest from AJAX request.
+function handleResponse(xhr) {
     "use strict";
+    var data = xhr.responseJSON;
     try {
-        $("div#code-exec-response").text(trimTrailingNewline(data.response));
-        $("div#code-exec-stdout").text(trimTrailingNewline(data.stdout));
-        $("div#code-exec-locals").text(stringifyLocals(data.locals));
+        $("div#code-exec-response").text(
+            addTrailingNewlines(data.stdout, 2)
+            + "["
+            + xhr.status
+            + "] "
+            + trimTrailingNewline(data.response)
+        );
+        $("div#code-exec-variables").text(stringifyLocals(data.locals));
     } catch (err) {
-        $("div#code-exec-response").text(err.name + ": " + err.message);
-        $("div#code-exec-stdout").text("");
-        $("div#code-exec-locals").text("");
+        $("div#code-exec-response").text(
+            "["
+            + xhr.status
+            + "] "
+            + err.name
+            + ": "
+            + err.message
+        );
+        $("div#code-exec-variables").text("");
     }
     $("input#code-editor-run").prop("disabled", false);
 }
@@ -87,13 +112,8 @@ $("form#code-editor-form").submit(function (event) {
             request.setRequestHeader("X-Api-Key", API_KEY);
             request.setRequestHeader("X-Amz-Invocation-Type", "Event");
         },
-        success: function (data) {
-            handleResponse(data);
-            console.log(data);
-        },
-        error: function (xhr) {
-            handleResponse(xhr.responseJSON);
-            console.log(xhr);
+        complete: function (xhr) {
+            handleResponse(xhr);
         }
     });
 });
