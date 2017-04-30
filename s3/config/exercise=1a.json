@@ -1,0 +1,17 @@
+{
+  "setup": "a = 2\nb = 3",
+  "main": "print('Hello there')",
+  "tests": {
+    "asserts": [
+        {
+            "expression": "a == 3",
+            "description": "`a` has `b`'s previous value."
+        }, {
+            "expression": "b == 2",
+            "description": "`b` has `a`'s previous value."
+        }
+    ],
+    "prints": []
+  },
+  "grouping": "exercise-1"
+}

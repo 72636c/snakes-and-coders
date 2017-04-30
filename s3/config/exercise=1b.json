@@ -1,0 +1,9 @@
+{
+  "setup": "from random import randint\na = randint(0, 9)\nb = randint(0, 9)\nprint('a = {}'.format(a))\nprint('b = {}'.format(b))",
+  "main": "print('Hello there')",
+  "tests": {
+    "asserts": [],
+    "prints": []
+  },
+  "grouping": "exercise-1"
+}
