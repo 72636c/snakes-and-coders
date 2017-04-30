@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Coding 101</title>
+    <link rel="canonical" href="https://www.snakesandcoders.com" />
     <link rel="stylesheet" href="style.css" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -16,22 +17,36 @@
       </header>
       <section class="wrapper">
         <form id="code-editor-form">
+          <textarea class="mono-input hide" disabled id="code-editor-setup"></textarea>
           <div id="code-editor-container"></div>
           <input id="code-editor-run" type="submit" value="Run (F9)">
         </form>
+      </section>
+      <section class="wrapper">
         <h3>Response</h3>
         <div class="mono-info" id="code-exec-response"></div>
+        <div class="hide" id="tests-container">
+          <h3>Tests</h3>
+          <ul class="checklist" id="code-exec-tests">
+            <li class="hide"></li>
+          </ul>
+        </div>
         <h3>Variables</h3>
         <div class="mono-info" id="code-exec-variables"></div>
       </section>
-      <section class="wrapper" id="secret-config">
-        <h3>Hey, you're not supposed to be looking at this!</h3>
-        <p><code id="code-editor-value">print("Hello there")</code></p>
+      <section class="wrapper hide" id="secret-config">
+        <h3>Secrets</h3>
+        <h4>Default Editor Value</h4>
+        <p><code id="code-editor-value"></code></p>
+        <h4>Variable Tests</h4>
+        <p><textarea class="mono-input" id="code-editor-tests-asserts"></textarea></p>
+        <h4>Print Tests</h4>
+        <p><textarea class="mono-input" id="code-editor-tests-prints"></textarea></p>
       </section>
     </div>
     <footer>
       <div class="wrapper">
-        <p><a href="https://microsoft.github.io/monaco-editor/" target="_blank">Monaco Editor</a> by <a href="https://www.microsoft.com/" target="_blank">Microsoft</a>. Style from <a href="https://www.seek.com.au/" target="_blank">SEEK</a>. Built on <a href="https://aws.amazon.com/" target="_blank">AWS</a>. ♥ to <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a>.</p>
+        <p><a href="https://microsoft.github.io/monaco-editor/" target="_blank">Monaco Editor</a> by <a href="https://www.microsoft.com/" target="_blank">Microsoft</a>&ensp;·&ensp;Style from <a href="https://www.seek.com.au/" target="_blank">SEEK</a>&ensp;·&ensp;Built with <a href="https://aws.amazon.com/" target="_blank">AWS</a>&ensp;·&ensp;<a href="https://github.com/72636c/snakes-and-coders" target="_blank">&lt;/&gt;</a> on <a href="https://github.com/" target="_blank">GitHub</a>&ensp;·&ensp;<span id="secret-switch">♥</span> to <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a></p>
       </div>
     </footer>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>

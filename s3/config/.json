@@ -1,0 +1,9 @@
+{
+  "setup": "",
+  "main": "print(\"Hello there\")",
+  "tests": {
+    "asserts": [],
+    "prints": []
+  },
+  "grouping": ""
+}
