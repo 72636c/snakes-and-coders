@@ -48,7 +48,6 @@ function stringifyVariables(variables) {
     var result = "";
     $.each(variables, function (key, value) {
         result += key + " = " + JSON.stringify(value).replace(/\\"/g, "\"") + "\n";
-        return;
     });
     return trimTrailingNewline(result);
 }
@@ -134,6 +133,7 @@ function handleResponse(xhr) {
 
 // Set up the Monaco Editor.
 function setupMonacoEditor(localStorageKey) {
+    "use strict";
     var editorValue = window.localStorage.getItem(localStorageKey);
     if (editorValue === null) {
         editorValue = $("code#code-editor-value").text();
@@ -154,6 +154,7 @@ function setupMonacoEditor(localStorageKey) {
 }
 
 function setupPage(param, data) {
+    "use strict";
     var localStorageKey = "editor-value";
     if (data === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
@@ -228,10 +229,9 @@ $("form#code-editor-form").submit(function (event) {
     $("input#code-editor-run").prop("disabled", true);
     var tests_asserts;
     var tests_prints;
-    var values_asserts;
+    var values_asserts = [];
     try {
         tests_asserts = JSON.parse($("textarea#code-editor-tests-asserts").val());
-        var values_asserts = []
         $.each(tests_asserts, function (index) {
             values_asserts.push(tests_asserts[index].expression);
         });
