@@ -3,13 +3,13 @@
   "main": "print(\"a = \" + str(a))\nprint(\"b = \" + str(b))",
   "tests": {
     "asserts": [
-        {
-            "expression": "a == 3",
-            "description": "`a` has `b`'s previous value of 3."
-        }, {
-            "expression": "b == 2",
-            "description": "`b` has `a`'s previous value 2."
-        }
+      {
+        "expression": "a == 3",
+        "description": "`a` has `b`'s previous value of 3."
+      }, {
+        "expression": "b == 2",
+        "description": "`b` has `a`'s previous value of 2."
+      }
     ],
     "prints": []
   },

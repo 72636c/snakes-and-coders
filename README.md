@@ -17,7 +17,7 @@ It consists of:
 
 ### Page configuration
 
-A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by passing its filename as a URL parameter, like `index.html/?<filename>/`.
+A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by passing its filename as a URL parameter, like `index.html/?<filename>`.
 
 ```json
 {
