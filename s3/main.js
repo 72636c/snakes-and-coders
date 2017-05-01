@@ -235,9 +235,13 @@ $("span#secret-switch").click(function () {
     "use strict";
     if ($("section#secret-config").hasClass("hide")) {
         $("textarea#code-editor-setup").prop("disabled", false);
+        $("textarea#code-editor-setup").removeClass("hide");
         $("section#secret-config").removeClass("hide");
     } else {
         $("textarea#code-editor-setup").prop("disabled", true);
+        if ($("textarea#code-editor-setup").val() === "") {
+            $("textarea#code-editor-setup").addClass("hide");
+        }
         $("section#secret-config").addClass("hide");
     }
 });
