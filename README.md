@@ -39,7 +39,10 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
             "description": "`z` equals {{random_z}}."
         }
     ],
-    "prints": ["He", "Hello", "he", "there"]
+    "prints": {
+        "positives": ["He", "Hello"],
+        "negatives": ["he", "there"]
+    }
   },
   "grouping": "exercise-1",
   "replacements": {
@@ -62,7 +65,10 @@ Requests to the API should be formatted like this:
         "main": "print('Hello')\nx = 1",
         "tests": {
             "asserts": ["x", "x == 1", "y == 0"],
-            "prints": ["He", "Hello", "he", "there"]
+            "prints": {
+                "positives": ["He", "Hello"],
+                "negatives": ["he", "there"]
+            }
         }
     }
 }
@@ -83,7 +89,10 @@ When the API is able to service a request, it will respond like this:
         "stdout": "Hello\\n",
         "tests": {
             "asserts": [true, true, true],
-            "prints": [true, true, false, false]
+            "prints": {
+                "positives": [true, true],
+                "negatives": [true, true]
+            }
         }
     },
     "statusCode": 200

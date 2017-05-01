@@ -77,8 +77,10 @@ function processTestsAuxiliary(tests, results, type) {
         var message = "";
         if (type === "asserts") {
             message = tests[index].description.replace(/`([^`]*)`/g, "<code class=\"variable\">$1</code>");
-        } else if (type === "prints") {
-            message = "<code class=\"variable\">" + tests[index] + "</code> should be printed.";
+        } else if (type === "prints-positives") {
+            message = "<code class=\"variable\">" + tests[index] + "</code> is printed.";
+        } else if (type === "prints-negatives") {
+            message = "<code class=\"variable\">" + tests[index] + "</code> is not printed.";
         }
         test.html(message);
         $("ul#code-exec-tests").append(test);
@@ -92,7 +94,10 @@ function processTests(results) {
     if (results === undefined) {
         results = {
             "asserts": undefined,
-            "prints": undefined
+            "prints": {
+                "positives": undefined,
+                "negatives": undefined
+            }
         };
     }
     try {
@@ -103,7 +108,8 @@ function processTests(results) {
     }
     try {
         var tests_prints = JSON.parse($("textarea#code-editor-tests-prints").val());
-        processTestsAuxiliary(tests_prints, results.prints, "prints");
+        processTestsAuxiliary(tests_prints.positives, results.prints.positives, "prints-positives");
+        processTestsAuxiliary(tests_prints.negatives, results.prints.negatives, "prints-negatives");
     } catch (ignore) {
         removeTests();
     }
