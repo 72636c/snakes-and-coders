@@ -135,11 +135,11 @@ Request SSL certificates `domain.tld` and `www.domain.tld` with ACM.
 
 #### Package assets
 
-Install Monaco Editor:
+Install jQuery and Monaco Editor:
 
 ```bash
 cd s3
-npm install monaco-editor@0.8.3
+npm install jquery monaco-editor
 ```
 
 Update `API_URL` and `API_KEY` variables in [**s3/main.js**](s3/main.js) to point to the Lambda API.
