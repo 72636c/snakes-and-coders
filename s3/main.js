@@ -150,7 +150,7 @@ function preprocessConfig(config) {
 }
 
 // Set up the Monaco Editor.
-function setupMonacoEditor(localStorageKey) {
+function setupMonacoEditor(localStorageKey, setupValue) {
     "use strict";
     var editorValue = window.localStorage.getItem(localStorageKey);
     if (editorValue === null) {
@@ -158,15 +158,24 @@ function setupMonacoEditor(localStorageKey) {
     }
     require.config({paths: {"vs": "node_modules/monaco-editor/min/vs"}});
     require(["vs/editor/editor.main"], function () {
-        var editor = monaco.editor.create(document.getElementById("code-editor-container"), {
-            value: editorValue,
-            theme: "vs-dark",
+        monaco.editor.create(document.getElementById("code-editor-setup-container"), {
+            automaticLayout: true,
             language: "python",
-            automaticLayout: true
+            readOnly: true,
+            theme: "vs-dark",
+            value: setupValue,
+            wrappingColumn: 0
+        });
+        var mainEditor = monaco.editor.create(document.getElementById("code-editor-main-container"), {
+            automaticLayout: true,
+            language: "python",
+            theme: "vs-dark",
+            value: editorValue,
+            wrappingColumn: 0
         });
         // Auto-save input every second.
         window.setInterval(function () {
-            window.localStorage.setItem(localStorageKey, editor.getValue());
+            window.localStorage.setItem(localStorageKey, mainEditor.getValue());
         }, 1000);
     });
 }
@@ -183,7 +192,7 @@ function setupPage(param, config) {
         // Pre-process page configuration.
         config = preprocessConfig(config);
         // Set up the page configuration.
-        var editorSetup = $("textarea#code-editor-setup");
+        var editorSetup = $("div#code-editor-setup-container");
         editorSetup.val(config.setup);
         if (editorSetup.val() === "") {
             editorSetup.addClass("hide");
@@ -196,7 +205,7 @@ function setupPage(param, config) {
         processTests();
         localStorageKey += addLeadingHyphen(config.grouping);
     }
-    setupMonacoEditor(localStorageKey);
+    setupMonacoEditor(localStorageKey, config.setup);
 }
 
 // Run when DOM is ready for execution.
@@ -234,13 +243,11 @@ $("textarea#code-editor-tests-prints").on("input change", processTests);
 $("span#secret-switch").click(function () {
     "use strict";
     if ($("section#secret-config").hasClass("hide")) {
-        $("textarea#code-editor-setup").prop("disabled", false);
-        $("textarea#code-editor-setup").removeClass("hide");
+        $("div#code-editor-setup-container").removeClass("hide");
         $("section#secret-config").removeClass("hide");
     } else {
-        $("textarea#code-editor-setup").prop("disabled", true);
-        if ($("textarea#code-editor-setup").val() === "") {
-            $("textarea#code-editor-setup").addClass("hide");
+        if (monaco.editor.getModels()[0].getValue() === "") {
+            $("div#code-editor-setup-container").addClass("hide");
         }
         $("section#secret-config").addClass("hide");
     }
@@ -267,8 +274,8 @@ $("form#code-editor-form").submit(function (event) {
         return;
     }
     var body = {
-        "setup": $("textarea#code-editor-setup").val(),
-        "main": monaco.editor.getModels()[0].getValue(),
+        "setup": monaco.editor.getModels()[0].getValue(),
+        "main": monaco.editor.getModels()[1].getValue(),
         "tests": {
             "asserts": values_asserts,
             "prints": tests_prints

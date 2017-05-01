@@ -45,7 +45,7 @@ kbd {
   white-space: nowrap;
 }
 
-button, code, div#code-editor-container, input[type="submit"], kbd, section#secret-config, textarea {
+button, code, div#code-editor-main-container, div#code-editor-setup-container, input[type="submit"], kbd, section#secret-config, textarea {
   border: 0.25rem solid transparent;
   border-radius: 0.25rem;
 }
@@ -108,7 +108,7 @@ button, input, textarea {
   font-size: 1em;
 }
 
-div#code-editor-container, textarea {
+div#code-editor-main-container, textarea {
   background-color: #1E1E1E;
 }
 
@@ -176,11 +176,23 @@ div.mono-info {
   width: 100%;
 }
 
-div#code-editor-container {
-  height: 25em;
+div#code-editor-main-container, div#code-editor-setup-container {
   margin-bottom: 1em;
   margin-top: 1em;
   width: 100%;
+}
+
+div#code-editor-main-container {
+  height: 20em;
+}
+
+div#code-editor-setup-container {
+  border-color: #1E1E1E;
+  height: 5em;
+}
+
+div#code-editor-setup-container .monaco-editor.vs-dark .monaco-editor-background {
+  background-color: rgb(0, 0, 0);
 }
 
 div#page-span {
@@ -235,11 +247,6 @@ ul.checklist li.fail:before {
 
 ul.checklist li.pass:before {
   background-color: #50B848;
-}
-
-textarea#code-editor-setup {
-  padding-left: 46px;
-  padding-right: 46px;
 }
 
 textarea.mono-input {
