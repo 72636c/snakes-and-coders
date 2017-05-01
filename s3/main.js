@@ -47,8 +47,7 @@ function stringifyVariables(variables) {
     "use strict";
     var result = "";
     $.each(variables, function (key, value) {
-        result += key + " = " + JSON.stringify(value) + "\n";
-        return;
+        result += key + " = " + JSON.stringify(value).replace(/\\"/g, "\"") + "\n";
     });
     return trimTrailingNewline(result);
 }
@@ -66,7 +65,7 @@ function processTestsAuxiliary(tests, results, type) {
     var testsContainer = $("div#tests-container");
     $.each(tests, function (index) {
         var test = $("ul#code-exec-tests>li").first().clone();
-        if (results !== undefined) {
+        if (results !== undefined && results[index] !== undefined) {
             if (results[index] === false) {
                 test.addClass("fail");
             } else {
@@ -132,50 +131,81 @@ function handleResponse(xhr) {
     $("input#code-editor-run").prop("disabled", false);
 }
 
+// Perform text processing on a config for "runtime variability".
+function preprocessConfig(config) {
+    "use strict";
+    var stringified_config = JSON.stringify(config);
+    // Substitute in random integers.
+    try {
+        var randomInts = config.replacements.random.int;
+        $.each(randomInts, function (index) {
+            var re = new RegExp(randomInts[index], "g");
+            var randomInt = Math.floor(Math.random() * 100) + 1;
+            stringified_config = stringified_config.replace(re, randomInt);
+        });
+    } catch (ignore) {
+        return config;
+    }
+    return JSON.parse(stringified_config);
+}
+
 // Set up the Monaco Editor.
-function setupMonacoEditor(localStorageKey) {
+function setupMonacoEditor(localStorageKey, setupValue) {
+    "use strict";
     var editorValue = window.localStorage.getItem(localStorageKey);
     if (editorValue === null) {
         editorValue = $("code#code-editor-value").text();
     }
     require.config({paths: {"vs": "node_modules/monaco-editor/min/vs"}});
     require(["vs/editor/editor.main"], function () {
-        var editor = monaco.editor.create(document.getElementById("code-editor-container"), {
-            value: editorValue,
-            theme: "vs-dark",
+        monaco.editor.create(document.getElementById("code-editor-setup-container"), {
+            automaticLayout: true,
             language: "python",
-            automaticLayout: true
+            readOnly: true,
+            theme: "vs-dark",
+            value: setupValue,
+            wrappingColumn: 0
+        });
+        var mainEditor = monaco.editor.create(document.getElementById("code-editor-main-container"), {
+            automaticLayout: true,
+            language: "python",
+            theme: "vs-dark",
+            value: editorValue,
+            wrappingColumn: 0
         });
         // Auto-save input every second.
         window.setInterval(function () {
-            window.localStorage.setItem(localStorageKey, editor.getValue());
+            window.localStorage.setItem(localStorageKey, mainEditor.getValue());
         }, 1000);
     });
 }
 
-function setupPage(param, data) {
+// Set up page according to retrieved config.
+function setupPage(param, config) {
+    "use strict";
     var localStorageKey = "editor-value";
-    if (data === undefined) {
+    if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
         $("textarea#code-editor-tests-prints").val(EMPTY_LIST);
         localStorageKey += addLeadingHyphen(param);
     } else {
+        // Pre-process page configuration.
+        config = preprocessConfig(config);
         // Set up the page configuration.
-        var editorSetup = $("textarea#code-editor-setup");
-        console.log(editorSetup.val());
-        editorSetup.val(data.setup);
+        var editorSetup = $("div#code-editor-setup-container");
+        editorSetup.val(config.setup);
         if (editorSetup.val() === "") {
             editorSetup.addClass("hide");
         } else {
             editorSetup.removeClass("hide");
         }
-        $("code#code-editor-value").text(data.main);
-        $("textarea#code-editor-tests-asserts").val(JSON.stringify(data.tests.asserts));
-        $("textarea#code-editor-tests-prints").val(JSON.stringify(data.tests.prints));
+        $("code#code-editor-value").text(config.main);
+        $("textarea#code-editor-tests-asserts").val(JSON.stringify(config.tests.asserts));
+        $("textarea#code-editor-tests-prints").val(JSON.stringify(config.tests.prints));
         processTests();
-        localStorageKey += addLeadingHyphen(data.grouping);
+        localStorageKey += addLeadingHyphen(config.grouping);
     }
-    setupMonacoEditor(localStorageKey);
+    setupMonacoEditor(localStorageKey, config.setup);
 }
 
 // Run when DOM is ready for execution.
@@ -187,8 +217,8 @@ $(document).ready(function () {
     $.ajax({
         dataType: "json",
         url: pathJSON,
-        success: function (data) {
-            setupPage(param, data);
+        success: function (config) {
+            setupPage(param, config);
         },
         error: function () {
             setupPage(param);
@@ -213,10 +243,12 @@ $("textarea#code-editor-tests-prints").on("input change", processTests);
 $("span#secret-switch").click(function () {
     "use strict";
     if ($("section#secret-config").hasClass("hide")) {
-        $("textarea#code-editor-setup").prop("disabled", false);
+        $("div#code-editor-setup-container").removeClass("hide");
         $("section#secret-config").removeClass("hide");
     } else {
-        $("textarea#code-editor-setup").prop("disabled", true);
+        if (monaco.editor.getModels()[0].getValue() === "") {
+            $("div#code-editor-setup-container").addClass("hide");
+        }
         $("section#secret-config").addClass("hide");
     }
 });
@@ -228,10 +260,9 @@ $("form#code-editor-form").submit(function (event) {
     $("input#code-editor-run").prop("disabled", true);
     var tests_asserts;
     var tests_prints;
-    var values_asserts;
+    var values_asserts = [];
     try {
         tests_asserts = JSON.parse($("textarea#code-editor-tests-asserts").val());
-        var values_asserts = []
         $.each(tests_asserts, function (index) {
             values_asserts.push(tests_asserts[index].expression);
         });
@@ -243,8 +274,8 @@ $("form#code-editor-form").submit(function (event) {
         return;
     }
     var body = {
-        "setup": $("textarea#code-editor-setup").val(),
-        "main": monaco.editor.getModels()[0].getValue(),
+        "setup": monaco.editor.getModels()[0].getValue(),
+        "main": monaco.editor.getModels()[1].getValue(),
         "tests": {
             "asserts": values_asserts,
             "prints": tests_prints

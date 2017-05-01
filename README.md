@@ -21,7 +21,7 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
 
 ```json
 {
-  "setup": "x = 0\ny = 0",
+  "setup": "x = 0\ny = 0\nz = {{random_z}}",
   "main": "print('Hello')",
   "tests": {
     "asserts": [
@@ -34,11 +34,19 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
         }, {
             "expression": "y == 0",
             "description": "`y` equals 0."
+        }, {
+            "expression": "z == {{random_z}}",
+            "description": "`z` equals {{random_z}}."
         }
     ],
     "prints": ["He", "Hello", "he", "there"]
   },
-  "grouping": "exercise-1"
+  "grouping": "exercise-1",
+  "replacements": {
+    "random": {
+      "int": ["{{random_z}}"]
+    }
+  }
 }
 ```
 
@@ -127,11 +135,11 @@ Request SSL certificates `domain.tld` and `www.domain.tld` with ACM.
 
 #### Package assets
 
-Install Monaco Editor:
+Install jQuery and Monaco Editor:
 
 ```bash
 cd s3
-npm install monaco-editor@0.8.3
+npm install jquery monaco-editor
 ```
 
 Update `API_URL` and `API_KEY` variables in [**s3/main.js**](s3/main.js) to point to the Lambda API.

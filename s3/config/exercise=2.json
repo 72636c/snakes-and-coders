@@ -1,9 +1,0 @@
-{
-  "setup": "jobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']",
-  "main": "for job in jobs:\n    print(job)",
-  "tests": {
-    "asserts": [],
-    "prints": []
-  },
-  "grouping": "exercise-2"
-}
