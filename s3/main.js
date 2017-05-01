@@ -65,7 +65,7 @@ function processTestsAuxiliary(tests, results, type) {
     var testsContainer = $("div#tests-container");
     $.each(tests, function (index) {
         var test = $("ul#code-exec-tests>li").first().clone();
-        if (results !== undefined) {
+        if (results !== undefined && results[index] !== undefined) {
             if (results[index] === false) {
                 test.addClass("fail");
             } else {
