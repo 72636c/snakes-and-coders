@@ -1,0 +1,23 @@
+{
+  "setup": "jobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']\nsearch_term = 'chef'",
+  "main": "results = []\n\nfor job in jobs:\n    print(job, end=', ')",
+  "tests": {
+    "asserts": [
+        {
+            "expression": "isinstance(results, list)",
+            "description": "`results` is a list."
+        }, {
+            "expression": "all(search_term in result for result in results)",
+            "description": "`results` contains only chef jobs."
+        }, {
+            "expression": "all(x in results for x in [y for y in jobs if search_term in y])",
+            "description": "`results` contains all listed chef jobs."
+        }, {
+            "expression": "all(result in jobs for result in results)",
+            "description": "`results` does not contain unlisted chef jobs."
+        }
+    ],
+    "prints": []
+  },
+  "grouping": "exercise-2"
+}
