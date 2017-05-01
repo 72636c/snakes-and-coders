@@ -1,5 +1,5 @@
 {
-  "setup": "jobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']",
+  "setup": "jobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']\nsearch_term = 'chef'",
   "main": "for job in jobs:\n    print(job)",
   "tests": {
     "asserts": [],
