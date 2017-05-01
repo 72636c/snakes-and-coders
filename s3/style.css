@@ -220,17 +220,21 @@ ul.checklist li {
 }
 
 ul.checklist li:before {
-  color: #8C8C8C;
-  content: "⬤";
+  background-color: #8C8C8C;
+  border-radius: 0.5em;
+  content: "";
+  display: inline-block;
+  height: 1em;
   margin-right: 1em;
+  width: 1em;
 }
 
 ul.checklist li.fail:before {
-  color: #DD3333;
+  background-color: #DD3333;
 }
 
 ul.checklist li.pass:before {
-  color: #50B848;
+  background-color: #50B848;
 }
 
 textarea#code-editor-setup {
