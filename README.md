@@ -21,7 +21,7 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
 
 ```json
 {
-  "setup": "x = 0\ny = 0",
+  "setup": "x = 0\ny = 0\nz = {{random_z}}",
   "main": "print('Hello')",
   "tests": {
     "asserts": [
@@ -34,11 +34,19 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
         }, {
             "expression": "y == 0",
             "description": "`y` equals 0."
+        }, {
+            "expression": "z == {{random_z}}",
+            "description": "`z` equals {{random_z}}."
         }
     ],
     "prints": ["He", "Hello", "he", "there"]
   },
-  "grouping": "exercise-1"
+  "grouping": "exercise-1",
+  "replacements": {
+    "random": {
+      "int": ["{{random_z}}"]
+    }
+  }
 }
 ```
 

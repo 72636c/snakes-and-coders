@@ -1,9 +1,22 @@
 {
-  "setup": "from random import randint\na = randint(0, 9)\nb = randint(0, 9)\nprint('a = {}'.format(a))\nprint('b = {}'.format(b))",
+  "setup": "a = {{random_a}}\nb = {{random_b}}",
   "main": "print(\"a = \" + str(a))\nprint(\"b = \" + str(b))",
   "tests": {
-    "asserts": [],
+    "asserts": [
+        {
+            "expression": "a == {{random_b}}",
+            "description": "`a` has `b`'s previous value of {{random_b}}."
+        }, {
+            "expression": "b == {{random_a}}",
+            "description": "`b` has `a`'s previous value of {{random_a}}."
+        }
+    ],
     "prints": []
   },
-  "grouping": "exercise-1"
+  "grouping": "exercise-1",
+  "replacements": {
+    "random": {
+      "int": ["{{random_a}}", "{{random_b}}"]
+    }
+  }
 }

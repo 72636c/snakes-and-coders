@@ -131,6 +131,24 @@ function handleResponse(xhr) {
     $("input#code-editor-run").prop("disabled", false);
 }
 
+// Perform text processing on a config for "runtime variability".
+function preprocessConfig(config) {
+    "use strict";
+    var stringified_config = JSON.stringify(config);
+    // Substitute in random integers.
+    try {
+        var randomInts = config.replacements.random.int;
+        $.each(randomInts, function (index) {
+            var re = new RegExp(randomInts[index], "g");
+            var randomInt = Math.floor(Math.random() * 100) + 1;
+            stringified_config = stringified_config.replace(re, randomInt);
+        });
+    } catch (ignore) {
+        return config;
+    }
+    return JSON.parse(stringified_config);
+}
+
 // Set up the Monaco Editor.
 function setupMonacoEditor(localStorageKey) {
     "use strict";
@@ -153,28 +171,30 @@ function setupMonacoEditor(localStorageKey) {
     });
 }
 
-function setupPage(param, data) {
+// Set up page according to retrieved config.
+function setupPage(param, config) {
     "use strict";
     var localStorageKey = "editor-value";
-    if (data === undefined) {
+    if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
         $("textarea#code-editor-tests-prints").val(EMPTY_LIST);
         localStorageKey += addLeadingHyphen(param);
     } else {
+        // Pre-process page configuration.
+        config = preprocessConfig(config);
         // Set up the page configuration.
         var editorSetup = $("textarea#code-editor-setup");
-        console.log(editorSetup.val());
-        editorSetup.val(data.setup);
+        editorSetup.val(config.setup);
         if (editorSetup.val() === "") {
             editorSetup.addClass("hide");
         } else {
             editorSetup.removeClass("hide");
         }
-        $("code#code-editor-value").text(data.main);
-        $("textarea#code-editor-tests-asserts").val(JSON.stringify(data.tests.asserts));
-        $("textarea#code-editor-tests-prints").val(JSON.stringify(data.tests.prints));
+        $("code#code-editor-value").text(config.main);
+        $("textarea#code-editor-tests-asserts").val(JSON.stringify(config.tests.asserts));
+        $("textarea#code-editor-tests-prints").val(JSON.stringify(config.tests.prints));
         processTests();
-        localStorageKey += addLeadingHyphen(data.grouping);
+        localStorageKey += addLeadingHyphen(config.grouping);
     }
     setupMonacoEditor(localStorageKey);
 }
@@ -188,8 +208,8 @@ $(document).ready(function () {
     $.ajax({
         dataType: "json",
         url: pathJSON,
-        success: function (data) {
-            setupPage(param, data);
+        success: function (config) {
+            setupPage(param, config);
         },
         error: function () {
             setupPage(param);

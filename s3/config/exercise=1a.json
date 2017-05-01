@@ -5,10 +5,10 @@
     "asserts": [
         {
             "expression": "a == 3",
-            "description": "`a` has `b`'s previous value."
+            "description": "`a` has `b`'s previous value of 3."
         }, {
             "expression": "b == 2",
-            "description": "`b` has `a`'s previous value."
+            "description": "`b` has `a`'s previous value 2."
         }
     ],
     "prints": []
