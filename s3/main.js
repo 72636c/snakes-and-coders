@@ -22,11 +22,11 @@ function trimTrailingSlash(text) {
     return text.replace(/\/$/, "");
 }
 
-// Add a hyphen to the start of a string if it is non-empty.
-function addLeadingHyphen(text) {
+// Add a character to the start of a string if it is non-empty.
+function prependLeadingCharacter(text, char) {
     "use strict";
     if (text && text.length > 0) {
-        return "-" + text;
+        return char + text;
     } else {
         return text;
     }
@@ -193,7 +193,7 @@ function setupPage(param, config) {
     if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
         $("textarea#code-editor-tests-prints").val(EMPTY_LIST);
-        localStorageKey += addLeadingHyphen(param);
+        localStorageKey += prependLeadingCharacter(param, "-");
     } else {
         // Pre-process page configuration.
         config = preprocessConfig(config);
@@ -209,9 +209,18 @@ function setupPage(param, config) {
         $("textarea#code-editor-tests-asserts").val(JSON.stringify(config.tests.asserts));
         $("textarea#code-editor-tests-prints").val(JSON.stringify(config.tests.prints));
         processTests();
-        localStorageKey += addLeadingHyphen(config.grouping);
+        localStorageKey += prependLeadingCharacter(config.grouping, "-");
     }
     setupMonacoEditor(localStorageKey, config.setup);
+}
+
+// Set up navigation buttons according to the retrieved config..
+function setupNavigation(param, config) {
+    "use strict";
+    var prevLink = config[param].prev;
+    var nextLink = config[param].next;
+    $("a#nav-prev").attr("href", "?" + prevLink);
+    $("a#nav-next").attr("href", "?" + nextLink);
 }
 
 // Run when DOM is ready for execution.
@@ -219,6 +228,13 @@ $(document).ready(function () {
     "use strict";
     // Retrieve config from URL parameter.
     var param = trimTrailingSlash(window.location.search.substring(1));
+    $.ajax({
+        dataType: "json",
+        url: "navigation.json",
+        success: function (config) {
+            setupNavigation(param, config);
+        }
+    });
     var pathJSON = ("/config/" + param + ".json");
     $.ajax({
         dataType: "json",

@@ -1,0 +1,22 @@
+{
+  "": {
+    "prev": "exercise=2b",
+    "next": "exercise=1a"
+  },
+  "exercise=1a": {
+    "prev": "",
+    "next": "exercise=1b"
+  },
+  "exercise=1b": {
+    "prev": "exercise=1a",
+    "next": "exercise=2a"
+  },
+  "exercise=2a": {
+    "prev": "exercise=1b",
+    "next": "exercise=2b"
+  },
+  "exercise=2b": {
+    "prev": "exercise=2a",
+    "next": ""
+  }
+}
