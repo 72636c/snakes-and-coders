@@ -22,11 +22,17 @@ function trimTrailingSlash(text) {
     return text.replace(/\/$/, "");
 }
 
-// Add a hyphen to the start of a string if it is non-empty.
-function addLeadingHyphen(text) {
+// Remove surrounding quotes from a string.
+function trimQuotes(text) {
+    "use strict";
+    return text.replace(/^"/, "").replace(/"$/, "");
+}
+
+// Add a character to the start of a string if it is non-empty.
+function prependLeadingCharacter(text, char) {
     "use strict";
     if (text && text.length > 0) {
-        return "-" + text;
+        return char + text;
     } else {
         return text;
     }
@@ -47,7 +53,11 @@ function stringifyVariables(variables) {
     "use strict";
     var result = "";
     $.each(variables, function (key, value) {
-        result += key + " = " + JSON.stringify(value).replace(/\\"/g, "\"") + "\n";
+        var cleansedValue = JSON.stringify(value.value).replace(/\\"/g, "\"");
+        if (!value.isString) {
+            cleansedValue = trimQuotes(cleansedValue);
+        }
+        result += key + " = " + cleansedValue + "\n";
     });
     return trimTrailingNewline(result);
 }
@@ -77,8 +87,10 @@ function processTestsAuxiliary(tests, results, type) {
         var message = "";
         if (type === "asserts") {
             message = tests[index].description.replace(/`([^`]*)`/g, "<code class=\"variable\">$1</code>");
-        } else if (type === "prints") {
-            message = "<code class=\"variable\">" + tests[index] + "</code> should be printed.";
+        } else if (type === "prints-positives") {
+            message = "<code class=\"variable\">" + tests[index] + "</code> is printed.";
+        } else if (type === "prints-negatives") {
+            message = "<code class=\"variable\">" + tests[index] + "</code> is not printed.";
         }
         test.html(message);
         $("ul#code-exec-tests").append(test);
@@ -92,7 +104,10 @@ function processTests(results) {
     if (results === undefined) {
         results = {
             "asserts": undefined,
-            "prints": undefined
+            "prints": {
+                "positives": undefined,
+                "negatives": undefined
+            }
         };
     }
     try {
@@ -103,7 +118,8 @@ function processTests(results) {
     }
     try {
         var tests_prints = JSON.parse($("textarea#code-editor-tests-prints").val());
-        processTestsAuxiliary(tests_prints, results.prints, "prints");
+        processTestsAuxiliary(tests_prints.positives, results.prints.positives, "prints-positives");
+        processTestsAuxiliary(tests_prints.negatives, results.prints.negatives, "prints-negatives");
     } catch (ignore) {
         removeTests();
     }
@@ -187,7 +203,7 @@ function setupPage(param, config) {
     if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
         $("textarea#code-editor-tests-prints").val(EMPTY_LIST);
-        localStorageKey += addLeadingHyphen(param);
+        localStorageKey += prependLeadingCharacter(param, "-");
     } else {
         // Pre-process page configuration.
         config = preprocessConfig(config);
@@ -203,9 +219,18 @@ function setupPage(param, config) {
         $("textarea#code-editor-tests-asserts").val(JSON.stringify(config.tests.asserts));
         $("textarea#code-editor-tests-prints").val(JSON.stringify(config.tests.prints));
         processTests();
-        localStorageKey += addLeadingHyphen(config.grouping);
+        localStorageKey += prependLeadingCharacter(config.grouping, "-");
     }
     setupMonacoEditor(localStorageKey, config.setup);
+}
+
+// Set up navigation buttons according to the retrieved config..
+function setupNavigation(param, config) {
+    "use strict";
+    var prevLink = config[param].prev;
+    var nextLink = config[param].next;
+    $("a#nav-prev").attr("href", "?" + prevLink);
+    $("a#nav-next").attr("href", "?" + nextLink);
 }
 
 // Run when DOM is ready for execution.
@@ -213,6 +238,13 @@ $(document).ready(function () {
     "use strict";
     // Retrieve config from URL parameter.
     var param = trimTrailingSlash(window.location.search.substring(1));
+    $.ajax({
+        dataType: "json",
+        url: "navigation.json",
+        success: function (config) {
+            setupNavigation(param, config);
+        }
+    });
     var pathJSON = ("/config/" + param + ".json");
     $.ajax({
         dataType: "json",

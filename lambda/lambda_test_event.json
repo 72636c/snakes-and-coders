@@ -2,5 +2,5 @@
     "headers": {
         "Content-Type": "application/json"
     },
-    "body": "{\"main\": \"print(\\\"Hello\\\")\\nx = 1\", \"setup\": \"x = 0\\ny = 0\", \"tests\": {\"prints\": [\"He\", \"Hello\", \"he\", \"Hello there\"], \"asserts\": [\"x\", \"x == 1\", \"y == 0\"]}}"
+    "body": "{\"main\": \"print(\\\"Hello\\\")\\nx = 1\", \"setup\": \"x = 0\\ny = 0\", \"tests\": {\"prints\": {\"positives\": [\"He\", \"Hello\"], \"negatives\": [\"he\", \"Hello there\"]}, \"asserts\": [\"x\", \"x == 1\", \"y == 0\"]}}"
 }

@@ -3,7 +3,10 @@
   "main": "print(\"Hello there\")",
   "tests": {
     "asserts": [],
-    "prints": []
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
   },
   "grouping": ""
 }

@@ -72,6 +72,13 @@ header {
   margin-right: auto;
 }
 
+.wrapper:after {
+  clear: both;
+  content: "";
+  display: block;
+  height: 0;
+}
+
 footer {
   margin-top: 2em;
   padding-bottom: 1em;
@@ -85,21 +92,60 @@ section + section {
 
 /*Link Elements*/
 
-footer a {
-  transition: color 0.25s;
+footer a, header a {
+  transition: color 0.25s, transform 0.25s;
+  display: inline-block;
 }
 
-footer a, footer a:link, footer a:visited {
+footer a, footer a:link, footer a:visited, header a, header a:link, header a:visited {
   color: rgb(255, 255, 255);
   text-decoration: none;
 }
 
-footer a:active {
+footer a:active, header a:hover {
   color: #E60278;
 }
 
 footer a:hover {
   text-decoration: underline;
+}
+
+footer a:active, header a:active {
+  transform: translateY(0.1rem);
+}
+
+header .wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+header h1 a {
+  outline: none;
+}
+
+header h1 a:focus {
+  text-shadow: 0 0 1px #1E90FF;
+}
+
+nav {
+  margin-bottom: auto;
+}
+
+nav a {
+  border: 0.1rem solid rgb(255, 255, 255);
+  border-radius: 1em;
+  padding: 0.5em;
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+
+nav a:hover {
+  background-color: #E60278;
+  color: white;
+}
+
+nav a + a {
+  margin-left: 0.5em;
 }
 
 /*Input Elements*/
@@ -142,7 +188,7 @@ button:enabled:active, input[type="submit"]:enabled:active {
   transform: scale(0.95);
 }
 
-button:enabled:focus, input[type="submit"]:enabled:focus, textarea:enabled:focus {
+button:enabled:focus, input[type="submit"]:enabled:focus, nav a:focus, textarea:enabled:focus {
   box-shadow: 0 0 0 1px #1E90FF;
   outline: none;
 }
@@ -156,6 +202,10 @@ button:enabled:hover, input[type="submit"]:enabled:hover {
 
 .hide {
   display: none;
+}
+
+.right {
+  margin-left: auto;
 }
 
 code.variable {

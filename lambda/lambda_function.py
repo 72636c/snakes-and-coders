@@ -53,7 +53,8 @@ def service_request(request):
     """Runs code per a JSON request and captures execution details."""
 
     assert_tests = {}
-    print_tests = {}
+    positive_tests = {}
+    negative_tests = {}
     stdout_ = StringIO()
     variables = {}
 
@@ -62,7 +63,8 @@ def service_request(request):
         setup = body["setup"]
         main = body["main"]
         assert_tests = body["tests"]["asserts"]
-        print_tests = body["tests"]["prints"]
+        positive_tests = body["tests"]["prints"]["positives"]
+        negative_tests = body["tests"]["prints"]["negatives"]
         code = _assemble_code(setup, main, assert_tests)
         _validate_timebox(code)
         _exec_with_redirect(code, variables, stdout_)
@@ -75,7 +77,7 @@ def service_request(request):
 
     prints = stdout_.getvalue()
     str_vars = _stringify_variables(variables)
-    tests = _eval_tests(variables, prints, print_tests)
+    tests = _eval_tests(variables, prints, positive_tests, negative_tests)
     body = _assemble_response_body(status, prints, str_vars, tests)
 
     return (status_code, body)
@@ -133,21 +135,25 @@ def _assemble_response_body(status="", stdout="", variables=None, tests=None):
     })
 
 
-def _eval_tests(variables, prints, print_tests):
+def _eval_tests(variables, prints, positive_tests, negative_tests):
 
     """Evaluates whether tests were passed by the executed code."""
 
     try:
-        result_asserts = variables["asserts"]
-        assert isinstance(result_asserts, list)
+        asserts = variables["asserts"]
+        assert isinstance(asserts, list)
     except (AssertionError, KeyError):
-        result_asserts = []
+        asserts = []
 
-    result_prints = [value in prints for value in print_tests]
+    positives = [value in prints for value in positive_tests]
+    negatives = [value not in prints for value in negative_tests]
 
     return {
-        "asserts": result_asserts,
-        "prints": result_prints,
+        "asserts": asserts,
+        "prints": {
+            "positives": positives,
+            "negatives": negatives,
+        },
     }
 
 
@@ -177,16 +183,22 @@ def _stringify_variables(variables):
     result = {}
 
     for (key, value) in variables.items():
+        is_string = False
         if key in ("__builtins__", "asserts"):
             continue
         if isinstance(value, (Number, str)):
+            if isinstance(value, str):
+                is_string = True
             new_value = value
         else:
             try:
                 new_value = json.dumps(value)
             except TypeError:
                 new_value = str(value)
-        result[key] = new_value
+        result[key] = {
+            "isString": is_string,
+            "value": new_value,
+        }
 
     return result
 
@@ -216,7 +228,10 @@ if __name__ == "__main__":
             "main": "print('Hello')\nx = 1",
             "tests": {
                 "asserts": ["x", "x == 1", "y == 0"],
-                "prints": ["He", "Hello", "he", "Hello there"],
+                "prints": {
+                    "positives": ["He", "Hello"],
+                    "negatives": ["he", "Hello there"],
+                },
             },
         }),
     })

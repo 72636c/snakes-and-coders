@@ -3,15 +3,18 @@
   "main": "print(\"a = \" + str(a))\nprint(\"b = \" + str(b))",
   "tests": {
     "asserts": [
-        {
-            "expression": "a == {{random_b}}",
-            "description": "`a` has `b`'s previous value of {{random_b}}."
-        }, {
-            "expression": "b == {{random_a}}",
-            "description": "`b` has `a`'s previous value of {{random_a}}."
-        }
+      {
+        "expression": "a == {{random_b}}",
+        "description": "`a` has `b`'s previous value of {{random_b}}."
+      }, {
+        "expression": "b == {{random_a}}",
+        "description": "`b` has `a`'s previous value of {{random_a}}."
+      }
     ],
-    "prints": []
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
   },
   "grouping": "exercise-1",
   "replacements": {
