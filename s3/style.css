@@ -139,7 +139,7 @@ nav a {
   margin-bottom: 0.25em;
   margin-top: 0.25em;
   padding: 0.25em 0.5em;
-  transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
 }
 
 nav a:hover {
