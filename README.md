@@ -25,23 +25,23 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
   "main": "print('Hello')",
   "tests": {
     "asserts": [
-        {
-            "expression": "x",
-            "description": "`x` exists."
-        }, {
-            "expression": "x == 1",
-            "description": "`x` equals 1."
-        }, {
-            "expression": "y == 0",
-            "description": "`y` equals 0."
-        }, {
-            "expression": "z == {{random_z}}",
-            "description": "`z` equals {{random_z}}."
-        }
+      {
+        "expression": "x",
+        "description": "`x` exists."
+      }, {
+        "expression": "x == 1",
+        "description": "`x` equals 1."
+      }, {
+        "expression": "y == 0",
+        "description": "`y` equals 0."
+      }, {
+        "expression": "z == {{random_z}}",
+        "description": "`z` equals {{random_z}}."
+      }
     ],
     "prints": {
-        "positives": ["He", "Hello"],
-        "negatives": ["he", "there"]
+      "positives": ["He", "Hello"],
+      "negatives": ["he", "there"]
     }
   },
   "grouping": "exercise-1",
@@ -53,24 +53,37 @@ A JSON configuration file placed in [**s3/config**](s3/config) can be loaded by 
 }
 ```
 
+The flow of pages to navigate from and to are defined in [**s3/navigation.json**](s3/navigation.json):
+
+```json
+...
+
+"<current-filename>": {
+"prev": "<previous-filename>",
+"next": "<next-filename>"
+},
+
+...
+```
+
 ### API request
 
 Requests to the API should be formatted like this:
 
 ```json
 {
-    "headers": {"Content-Type": "application/json"},
-    "body": {
-        "setup": "x = 0\ny = 0",
-        "main": "print('Hello')\nx = 1",
-        "tests": {
-            "asserts": ["x", "x == 1", "y == 0"],
-            "prints": {
-                "positives": ["He", "Hello"],
-                "negatives": ["he", "there"]
-            }
-        }
+  "headers": {"Content-Type": "application/json"},
+  "body": {
+    "setup": "x = 0\ny = 0",
+    "main": "print('Hello')\nx = 1",
+    "tests": {
+      "asserts": ["x", "x == 1", "y == 0"],
+      "prints": {
+        "positives": ["He", "Hello"],
+        "negatives": ["he", "there"]
+      }
     }
+  }
 }
 ```
 
@@ -80,22 +93,22 @@ When the API is able to service a request, it will respond like this:
 
 ```json
 {
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "body": {
-        "status": "OK",
-        "variables": {"x": 1, "y": 0},
-        "stdout": "Hello\\n",
-        "tests": {
-            "asserts": [true, true, true],
-            "prints": {
-                "positives": [true, true],
-                "negatives": [true, true]
-            }
-        }
-    },
-    "statusCode": 200
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "status": "OK",
+    "variables": {"x": 1, "y": 0},
+    "stdout": "Hello\\n",
+    "tests": {
+      "asserts": [true, true, true],
+      "prints": {
+        "positives": [true, true],
+        "negatives": [true, true]
+      }
+    }
+  },
+  "statusCode": 200
 }
 ```
 
