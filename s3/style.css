@@ -120,6 +120,14 @@ header .wrapper {
   justify-content: space-between;
 }
 
+header h1 a {
+  outline: none;
+}
+
+header h1 a:focus {
+  text-shadow: 0 0 1px #1E90FF;
+}
+
 nav {
   margin-bottom: auto;
 }
