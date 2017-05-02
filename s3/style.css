@@ -117,7 +117,8 @@ footer a:active, header a:active {
 header .wrapper {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 header h1 a {
@@ -135,7 +136,9 @@ nav {
 nav a {
   border: 0.1rem solid rgb(255, 255, 255);
   border-radius: 1em;
-  padding: 0.5em;
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
+  padding: 0.25em 0.5em;
   transition: background-color 0.25s, border-color 0.25s, color 0.25s;
 }
 
@@ -204,8 +207,14 @@ button:enabled:hover, input[type="submit"]:enabled:hover {
   display: none;
 }
 
-.right {
-  margin-left: auto;
+.left {
+  margin-right: auto;
+}
+
+h1:after {
+  content: "";
+  display: inline-block;
+  width: 1em;
 }
 
 code.variable {
