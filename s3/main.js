@@ -136,7 +136,9 @@ function handleResponse(xhr) {
     "use strict";
     var body = xhr.responseJSON;
     try {
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance(body.stdout));
+        var utterance = new SpeechSynthesisUtterance(body.stdout);
+        utterance.rate = 2;
+        window.speechSynthesis.speak(utterance);
         $("div#code-exec-response").text(addTrailingNewlines(body.stdout, 2) + combineStatus(xhr.status, trimTrailingNewline(body.status)));
         $("div#code-exec-variables").text(stringifyVariables(body.variables));
         processTests(body.tests);
@@ -257,6 +259,11 @@ $(document).ready(function () {
             setupPage(param);
         }
     });
+});
+
+// Stop text-to-speech on close.
+$(window).on("unload", function () {
+    window.speechSynthesis.cancel();
 });
 
 // Submit form when F9 is hit.
