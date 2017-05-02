@@ -183,16 +183,22 @@ def _stringify_variables(variables):
     result = {}
 
     for (key, value) in variables.items():
+        is_string = False
         if key in ("__builtins__", "asserts"):
             continue
         if isinstance(value, (Number, str)):
+            if isinstance(value, str):
+                is_string = True
             new_value = value
         else:
             try:
                 new_value = json.dumps(value)
             except TypeError:
                 new_value = str(value)
-        result[key] = new_value
+        result[key] = {
+            "isString": is_string,
+            "value": new_value,
+        }
 
     return result
 

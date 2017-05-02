@@ -98,7 +98,10 @@ When the API is able to service a request, it will respond like this:
   },
   "body": {
     "status": "OK",
-    "variables": {"x": 1, "y": 0},
+    "variables": {
+      "x": {"isString": false, "value": 1},
+      "y": {"isString": false, "value": 0}
+    },
     "stdout": "Hello\\n",
     "tests": {
       "asserts": [true, true, true],

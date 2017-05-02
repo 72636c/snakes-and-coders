@@ -22,6 +22,12 @@ function trimTrailingSlash(text) {
     return text.replace(/\/$/, "");
 }
 
+// Remove surrounding quotes from a string.
+function trimQuotes(text) {
+    "use strict";
+    return text.replace(/^"/, "").replace(/"$/, "");
+}
+
 // Add a character to the start of a string if it is non-empty.
 function prependLeadingCharacter(text, char) {
     "use strict";
@@ -47,7 +53,11 @@ function stringifyVariables(variables) {
     "use strict";
     var result = "";
     $.each(variables, function (key, value) {
-        result += key + " = " + JSON.stringify(value).replace(/\\"/g, "\"") + "\n";
+        var cleansedValue = JSON.stringify(value.value).replace(/\\"/g, "\"");
+        if (!value.isString) {
+            cleansedValue = trimQuotes(cleansedValue);
+        }
+        result += key + " = " + cleansedValue + "\n";
     });
     return trimTrailingNewline(result);
 }
