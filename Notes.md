@@ -176,7 +176,7 @@ How can we check if something is in a list?
 jobs = ['ceo', 'hr manager', 'developer', 'cs rep']
 job_i_want = 'ceo'
 
-print(job_i_want in job)
+print(job_i_want in jobs)
 ```
 
 How about finding some text within a larger piece of text?
@@ -207,7 +207,7 @@ new_numbers = []
 
 for o in old_numbers:
     n = o * 2
-    new_numbers = new_numbers + n
+    new_numbers = new_numbers + [n]
 
 print(new_numbers)
 ```
