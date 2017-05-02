@@ -136,6 +136,7 @@ function handleResponse(xhr) {
     "use strict";
     var body = xhr.responseJSON;
     try {
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance(body.stdout));
         $("div#code-exec-response").text(addTrailingNewlines(body.stdout, 2) + combineStatus(xhr.status, trimTrailingNewline(body.status)));
         $("div#code-exec-variables").text(stringifyVariables(body.variables));
         processTests(body.tests);
