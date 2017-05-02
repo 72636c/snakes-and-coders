@@ -1,0 +1,18 @@
+{
+  "shorthand": "3",
+  "setup": "# Let's print whether a number is smaller or bigger than 50; try refreshing the page!\nnum = {{random_num}}",
+  "main": "if ",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-3",
+  "replacements": {
+    "random": {
+      "int": ["{{random_num}}"]
+    }
+  }
+}

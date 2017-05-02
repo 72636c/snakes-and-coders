@@ -1,0 +1,13 @@
+{
+  "shorthand": "4",
+  "setup": "# Let's pick out words to print a deeply meaningful sentence.\nwords = ['nigel', 'a', 'hair', 'quiet', 'personality', 'and', 'warm', 'has', 'spiky', 'is', 'bryce']",
+  "main": "sentence = 'Hello there '\nsentence = sentence + words[0]\nprint(sentence)",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-4"
+}

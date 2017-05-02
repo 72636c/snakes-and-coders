@@ -211,6 +211,9 @@ function setupPage(param, config) {
         // Pre-process page configuration.
         config = preprocessConfig(config);
         // Set up the page configuration.
+        if (config.shorthand !== undefined && config.shorthand !== "") {
+            $("span#page-subtitle").text("\u2002(" + config.shorthand + ")");
+        }
         var editorSetup = $("div#code-editor-setup-container");
         editorSetup.val(config.setup);
         if (editorSetup.val() === "") {

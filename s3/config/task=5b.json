@@ -1,0 +1,13 @@
+{
+  "shorthand": "5b",
+  "setup": "# Let's print each job containing the search term.\njobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']\nsearch_term = 'driver'",
+  "main": "for ",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": ["truck driver", "taxi driver", "racing driver"],
+      "negatives": ["customer support representative", "chef", "baker", "junior chef", "sous chef", "cleaner", "business analyst", "chef senior", "developer", "hr manager"]
+    }
+  },
+  "grouping": "task-5"
+}

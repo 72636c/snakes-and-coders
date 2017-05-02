@@ -1,0 +1,13 @@
+{
+  "shorthand": "5a",
+  "setup": "# Let's print each chef job.\njobs = ['customer support representative', 'chef', 'truck driver', 'baker', 'junior chef', 'taxi driver', 'sous chef', 'cleaner', 'business analyst', 'chef senior', 'racing driver', 'developer', 'hr manager']",
+  "main": "for ",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": ["chef", "junior chef", "sous chef", "chef senior"],
+      "negatives": ["customer support representative", "truck driver", "baker", "taxi driver", "cleaner", "business analyst", "racing driver", "developer", "hr manager"]
+    }
+  },
+  "grouping": "task-5"
+}
