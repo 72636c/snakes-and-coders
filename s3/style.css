@@ -134,7 +134,7 @@ nav {
 }
 
 nav a {
-  border: 1px solid rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
   border-radius: 1em;
   margin-bottom: 0.25em;
   margin-top: 0.25em;
