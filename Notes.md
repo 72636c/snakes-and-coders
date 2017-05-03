@@ -161,7 +161,7 @@ We can add to an existing thing.
 ```python
 company = "SE"
 company = company + "EK"
-print("company")
+print(company)
 ```
 
 ### Pick out list items
