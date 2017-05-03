@@ -220,7 +220,7 @@ button#toggle-sound, button#toggle-sound:hover, button#toggle-sound:active, butt
   box-shadow: none;
 }
 
-button.on {
+button.off {
   background: linear-gradient(to right top, transparent 45%, #DD3333 45.1%, #DD3333 54.9%, transparent 55%);
 }
 

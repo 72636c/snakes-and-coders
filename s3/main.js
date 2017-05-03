@@ -160,7 +160,7 @@ function preprocessConfig(config) {
         var randomInts = config.replacements.random.int;
         $.each(randomInts, function (index) {
             var re = new RegExp(randomInts[index], "g");
-            var randomInt = Math.floor(Math.random() * 100) + 1;
+            var randomInt = Math.floor(Math.random() * 50) + 1;
             stringified_config = stringified_config.replace(re, randomInt);
         });
     } catch (ignore) {
@@ -197,6 +197,7 @@ function setupMonacoEditor(localStorageKey, setupValue) {
         window.setInterval(function () {
             window.localStorage.setItem(localStorageKey, mainEditor.getValue());
         }, 1000);
+        $("form#code-editor-form").submit();
     });
 }
 
@@ -204,7 +205,7 @@ function setupMonacoEditor(localStorageKey, setupValue) {
 function setupPage(param, config) {
     "use strict";
     if (soundEnabled()) {
-        $("button#toggle-sound").addClass("on");
+        $("button#toggle-sound").removeClass("off");
     }
     var localStorageKey = "editor-value";
     if (config === undefined) {
@@ -302,9 +303,9 @@ $("button#toggle-sound").click(function () {
     var enabled = true;
     if (soundEnabled()) {
         enabled = false;
-        $("button#toggle-sound").removeClass("on");
+        $("button#toggle-sound").addClass("off");
     } else {
-        $("button#toggle-sound").addClass("on");
+        $("button#toggle-sound").removeClass("off");
     }
     window.localStorage.setItem("sound", JSON.stringify(enabled));
 });

@@ -1,7 +1,7 @@
 {
   "shorthand": "4",
-  "setup": "# Let's pick out words to print a deeply meaningful sentence.\nwords = ['nigel', 'a', 'hair', 'quiet', 'personality', 'and', 'warm', 'has', 'spiky', 'is', 'bryce']",
-  "main": "sentence = 'Hello there '\nsentence = sentence + words[0]\nprint(sentence)",
+  "setup": "# [Optional] Let's pick out words to print a deeply meaningful sentence.\nwords = ['Nigel', 'a', 'hair', 'quiet', 'personality', 'and', 'warm', 'has', 'spiky', 'is', 'Bryce']",
+  "main": "print('Did', 'you', 'know', 'that', words[0])",
   "tests": {
     "asserts": [],
     "prints": {
