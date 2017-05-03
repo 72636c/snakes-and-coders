@@ -136,9 +136,10 @@ function handleResponse(xhr) {
     "use strict";
     var body = xhr.responseJSON;
     try {
-        var utterance = new SpeechSynthesisUtterance(body.stdout);
-        utterance.rate = 2;
-        window.speechSynthesis.speak(utterance);
+        if (soundEnabled()) {
+            var utterance = new SpeechSynthesisUtterance(body.stdout);
+            window.speechSynthesis.speak(utterance);
+        }
         $("div#code-exec-response").text(addTrailingNewlines(body.stdout, 2) + combineStatus(xhr.status, trimTrailingNewline(body.status)));
         $("div#code-exec-variables").text(stringifyVariables(body.variables));
         processTests(body.tests);
@@ -202,6 +203,9 @@ function setupMonacoEditor(localStorageKey, setupValue) {
 // Set up page according to retrieved config.
 function setupPage(param, config) {
     "use strict";
+    if (soundEnabled()) {
+        $("button#toggle-sound").addClass("on");
+    }
     var localStorageKey = "editor-value";
     if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
@@ -276,6 +280,33 @@ $(document).keyup(function (event) {
         event.stopPropagation();
         $("form#code-editor-form").submit();
     }
+});
+
+// Checks if sound is enabled.
+function soundEnabled() {
+    "use strict";
+    var sound = window.localStorage.getItem("sound");
+    if (sound === null) {
+        return false;
+    }
+    try {
+        return JSON.parse(sound);
+    } catch (ignore) {
+        return false;
+    }
+}
+
+// Toggle sound.
+$("button#toggle-sound").click(function () {
+    "use strict";
+    var enabled = true;
+    if (soundEnabled()) {
+        enabled = false;
+        $("button#toggle-sound").removeClass("on");
+    } else {
+        $("button#toggle-sound").addClass("on");
+    }
+    window.localStorage.setItem("sound", JSON.stringify(enabled));
 });
 
 // Re-process tests upon edits.

@@ -121,12 +121,12 @@ header .wrapper {
   justify-content: flex-start;
 }
 
-header h1 a {
-  outline: none;
+header button:focus, header h1 a:focus {
+  text-shadow: 0 0 1px #1E90FF;
 }
 
-header h1 a:focus {
-  text-shadow: 0 0 1px #1E90FF;
+header h1 a {
+  outline: none;
 }
 
 nav {
@@ -134,7 +134,7 @@ nav {
 }
 
 nav a {
-  border: 0.1rem solid rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
   border-radius: 1em;
   margin-bottom: 0.25em;
   margin-top: 0.25em;
@@ -209,6 +209,19 @@ button:enabled:hover, input[type="submit"]:enabled:hover {
 
 .left {
   margin-right: auto;
+}
+
+button#toggle-sound, button#toggle-sound:hover, button#toggle-sound:active, button#toggle-sound:focus {
+  background-color: transparent;
+  border: none;
+  margin-right: 1em;
+  padding: 0;
+  display: inline-block;
+  box-shadow: none;
+}
+
+button.on {
+  background: linear-gradient(to right top, transparent 45%, #DD3333 45.1%, #DD3333 54.9%, transparent 55%);
 }
 
 code.variable {
