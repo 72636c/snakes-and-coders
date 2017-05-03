@@ -1,0 +1,13 @@
+{
+  "shorthand": "6",
+  "setup": "# Let's try searching for text in resumes.\nresumes = []\n\nimport urllib.request\nfor i in range(1, 5):\n    cv_link = 'https://www.snakesandcoders.com/resumes/resume{}.txt'.format(i)\n    cv_file = urllib.request.urlopen(cv_link)\n    cv_text = cv_file.read().decode('utf8')\n    resumes.append(cv_text)",
+  "main": "# Some suggestions: C++, Java, 2 years of experience\n\nfor resume in resumes:\n    print('Hello there')",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-6"
+}

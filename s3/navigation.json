@@ -1,6 +1,6 @@
 {
   "": {
-    "prev": "task=5b",
+    "prev": "task=6",
     "next": "task=1"
   },
   "task=1": {
@@ -29,6 +29,10 @@
   },
   "task=5b": {
     "prev": "task=5a",
+    "next": "task=6"
+  },
+  "task=6": {
+    "prev": "task=5b",
     "next": ""
   }
 }
