@@ -1,0 +1,21 @@
+{
+  "shorthand": "2a",
+  "setup": "# Let's swap the meanings of two muddled-up variables.\nfirstname = 'Bassat'\nlastname = 'Andrew'",
+  "main": "",
+  "tests": {
+    "asserts": [
+      {
+        "expression": "firstname == 'Andrew'",
+        "description": "`Andrew` is his first name."
+      }, {
+        "expression": "lastname == 'Bassat'",
+        "description": "`Bassat` is his last name."
+      }
+    ],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-2"
+}

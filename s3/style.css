@@ -117,15 +117,16 @@ footer a:active, header a:active {
 header .wrapper {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+header button:focus, header h1 a:focus {
+  text-shadow: 0 0 1px #1E90FF;
 }
 
 header h1 a {
   outline: none;
-}
-
-header h1 a:focus {
-  text-shadow: 0 0 1px #1E90FF;
 }
 
 nav {
@@ -133,10 +134,12 @@ nav {
 }
 
 nav a {
-  border: 0.1rem solid rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
   border-radius: 1em;
-  padding: 0.5em;
-  transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
+  padding: 0.25em 0.5em;
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
 }
 
 nav a:hover {
@@ -204,8 +207,21 @@ button:enabled:hover, input[type="submit"]:enabled:hover {
   display: none;
 }
 
-.right {
-  margin-left: auto;
+.left {
+  margin-right: auto;
+}
+
+button#toggle-sound, button#toggle-sound:hover, button#toggle-sound:active, button#toggle-sound:focus {
+  background-color: transparent;
+  border: none;
+  margin-right: 1em;
+  padding: 0;
+  display: inline-block;
+  box-shadow: none;
+}
+
+button.off {
+  background: linear-gradient(to right top, transparent 45%, #DD3333 45.1%, #DD3333 54.9%, transparent 55%);
 }
 
 code.variable {
@@ -249,12 +265,22 @@ div#page-span {
   min-height: calc(100% - 3rem);
 }
 
+header h1 {
+  margin-right: 1em;
+}
+
 input#code-editor-run {
   min-width: 100%;
 }
 
 section#secret-config {
   color: rgb(191, 191, 191);
+}
+
+span#page-subtitle {
+  color: rgb(255, 255, 255);
+  font-size: 0.5em;
+  font-weight: normal;
 }
 
 span#secret-switch {

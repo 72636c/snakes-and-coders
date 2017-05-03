@@ -1,6 +1,7 @@
 {
-  "setup": "a = {{random_a}}\nb = {{random_b}}",
-  "main": "print(\"a = \" + str(a))\nprint(\"b = \" + str(b))",
+  "shorthand": "2b",
+  "setup": "# Let's swap the meanings of two variables; try refreshing the page!\na = {{random_a}}\nb = {{random_b}}",
+  "main": "",
   "tests": {
     "asserts": [
       {
@@ -16,7 +17,7 @@
       "negatives": []
     }
   },
-  "grouping": "exercise-1",
+  "grouping": "task-2",
   "replacements": {
     "random": {
       "int": ["{{random_a}}", "{{random_b}}"]

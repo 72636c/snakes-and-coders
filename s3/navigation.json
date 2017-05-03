@@ -1,22 +1,38 @@
 {
   "": {
-    "prev": "exercise=2b",
-    "next": "exercise=1a"
+    "prev": "task=6",
+    "next": "task=1"
   },
-  "exercise=1a": {
+  "task=1": {
     "prev": "",
-    "next": "exercise=1b"
+    "next": "task=2a"
   },
-  "exercise=1b": {
-    "prev": "exercise=1a",
-    "next": "exercise=2a"
+  "task=2a": {
+    "prev": "task=1",
+    "next": "task=2b"
   },
-  "exercise=2a": {
-    "prev": "exercise=1b",
-    "next": "exercise=2b"
+  "task=2b": {
+    "prev": "task=2a",
+    "next": "task=3"
   },
-  "exercise=2b": {
-    "prev": "exercise=2a",
+  "task=3": {
+    "prev": "task=2b",
+    "next": "task=4"
+  },
+  "task=4": {
+    "prev": "task=3",
+    "next": "task=5a"
+  },
+  "task=5a": {
+    "prev": "task=4",
+    "next": "task=5b"
+  },
+  "task=5b": {
+    "prev": "task=5a",
+    "next": "task=6"
+  },
+  "task=6": {
+    "prev": "task=5b",
     "next": ""
   }
 }

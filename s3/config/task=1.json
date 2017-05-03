@@ -1,0 +1,13 @@
+{
+  "shorthand": "1",
+  "setup": "# Let's print out a nursery rhyme.",
+  "main": "print(\"twinkle twinkle\")",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-1"
+}

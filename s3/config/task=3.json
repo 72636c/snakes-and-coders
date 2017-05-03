@@ -1,0 +1,18 @@
+{
+  "shorthand": "3",
+  "setup": "# Let's check whether someone is over 18; try refreshing the page!\nage = {{random_age}}",
+  "main": "if ",
+  "tests": {
+    "asserts": [],
+    "prints": {
+      "positives": [],
+      "negatives": []
+    }
+  },
+  "grouping": "task-3",
+  "replacements": {
+    "random": {
+      "int": ["{{random_age}}"]
+    }
+  }
+}

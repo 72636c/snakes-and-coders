@@ -136,6 +136,10 @@ function handleResponse(xhr) {
     "use strict";
     var body = xhr.responseJSON;
     try {
+        if (soundEnabled()) {
+            var utterance = new SpeechSynthesisUtterance(body.stdout);
+            window.speechSynthesis.speak(utterance);
+        }
         $("div#code-exec-response").text(addTrailingNewlines(body.stdout, 2) + combineStatus(xhr.status, trimTrailingNewline(body.status)));
         $("div#code-exec-variables").text(stringifyVariables(body.variables));
         processTests(body.tests);
@@ -156,7 +160,7 @@ function preprocessConfig(config) {
         var randomInts = config.replacements.random.int;
         $.each(randomInts, function (index) {
             var re = new RegExp(randomInts[index], "g");
-            var randomInt = Math.floor(Math.random() * 100) + 1;
+            var randomInt = Math.floor(Math.random() * 50) + 1;
             stringified_config = stringified_config.replace(re, randomInt);
         });
     } catch (ignore) {
@@ -193,12 +197,16 @@ function setupMonacoEditor(localStorageKey, setupValue) {
         window.setInterval(function () {
             window.localStorage.setItem(localStorageKey, mainEditor.getValue());
         }, 1000);
+        $("form#code-editor-form").submit();
     });
 }
 
 // Set up page according to retrieved config.
 function setupPage(param, config) {
     "use strict";
+    if (soundEnabled()) {
+        $("button#toggle-sound").removeClass("off");
+    }
     var localStorageKey = "editor-value";
     if (config === undefined) {
         $("textarea#code-editor-tests-asserts").val(EMPTY_LIST);
@@ -208,6 +216,9 @@ function setupPage(param, config) {
         // Pre-process page configuration.
         config = preprocessConfig(config);
         // Set up the page configuration.
+        if (config.shorthand !== undefined && config.shorthand !== "") {
+            $("span#page-subtitle").text("\u2002(" + config.shorthand + ")");
+        }
         var editorSetup = $("div#code-editor-setup-container");
         editorSetup.val(config.setup);
         if (editorSetup.val() === "") {
@@ -258,6 +269,11 @@ $(document).ready(function () {
     });
 });
 
+// Stop text-to-speech on close.
+$(window).on("unload", function () {
+    window.speechSynthesis.cancel();
+});
+
 // Submit form when F9 is hit.
 $(document).keyup(function (event) {
     "use strict";
@@ -265,6 +281,33 @@ $(document).keyup(function (event) {
         event.stopPropagation();
         $("form#code-editor-form").submit();
     }
+});
+
+// Checks if sound is enabled.
+function soundEnabled() {
+    "use strict";
+    var sound = window.localStorage.getItem("sound");
+    if (sound === null) {
+        return false;
+    }
+    try {
+        return JSON.parse(sound);
+    } catch (ignore) {
+        return false;
+    }
+}
+
+// Toggle sound.
+$("button#toggle-sound").click(function () {
+    "use strict";
+    var enabled = true;
+    if (soundEnabled()) {
+        enabled = false;
+        $("button#toggle-sound").addClass("off");
+    } else {
+        $("button#toggle-sound").removeClass("off");
+    }
+    window.localStorage.setItem("sound", JSON.stringify(enabled));
 });
 
 // Re-process tests upon edits.
