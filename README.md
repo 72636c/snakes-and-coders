@@ -121,6 +121,14 @@ The following status codes may be returned:
 - 400 Bad Request: request was serviced but code execution failed
 - 502 Bad Gateway: request was unhandled, causing an error on `Access-Control-Allow-Origin`
 
+## Codebase
+
+### Code quality
+
+[**Flake8**](http://flake8.pycqa.org/en/latest/)
+
+[**JavaScript Standard Style**](https://standardjs.com/)
+
 ## Deployment
 
 ### Prerequisites
