@@ -1,5 +1,5 @@
 /*global
-    $, console, monaco, require, window
+    $, SpeechSynthesisUtterance, console, monaco, require, window
 */
 
 // Python API endpoint.
@@ -129,6 +129,20 @@ function processTests(results) {
 function combineStatus(code, message) {
     "use strict";
     return "[" + code + "] " + message;
+}
+
+// Checks if sound is enabled.
+function soundEnabled() {
+    "use strict";
+    var sound = window.localStorage.getItem("sound");
+    if (sound === null) {
+        return false;
+    }
+    try {
+        return JSON.parse(sound);
+    } catch (ignore) {
+        return false;
+    }
 }
 
 // Handle XMLHttpRequest response from AJAX request.
@@ -271,6 +285,7 @@ $(document).ready(function () {
 
 // Stop text-to-speech on close.
 $(window).on("unload", function () {
+    "use strict";
     window.speechSynthesis.cancel();
 });
 
@@ -282,20 +297,6 @@ $(document).keyup(function (event) {
         $("form#code-editor-form").submit();
     }
 });
-
-// Checks if sound is enabled.
-function soundEnabled() {
-    "use strict";
-    var sound = window.localStorage.getItem("sound");
-    if (sound === null) {
-        return false;
-    }
-    try {
-        return JSON.parse(sound);
-    } catch (ignore) {
-        return false;
-    }
-}
 
 // Toggle sound.
 $("button#toggle-sound").click(function () {
